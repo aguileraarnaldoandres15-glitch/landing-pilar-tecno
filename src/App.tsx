@@ -1,6 +1,14 @@
 import { Container, Row, Col } from "react-bootstrap";
 import BarraNavegacion from "./components/BarraNavegacion/BarraNavegacion";
 import BotonColor from "./components/BotonColor/BotonColor";
+import CursoItem from "./components/CursoItem/CursoItem";
+
+// Array de cursos visto en las Clases 3 y 6
+const cursos = [
+  { id: 1, nombre: "React" },
+  { id: 2, nombre: "Node.js" },
+  { id: 3, nombre: "TypeScript" },
+];
 
 function App() {
   return (
@@ -15,7 +23,14 @@ function App() {
             <BotonColor />
           </Col>
           <Col md={6}>
-            {/* acá van los cursos, más adelante */}
+            <h3>Cursos disponibles</h3>
+            {cursos.map((curso) => (
+              <CursoItem
+                key={curso.id}
+                id={curso.id}
+                nombre={curso.nombre}
+              />
+            ))}
           </Col>
         </Row>
       </Container>
