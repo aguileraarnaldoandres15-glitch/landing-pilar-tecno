@@ -3,7 +3,7 @@ import BarraNavegacion from "./components/BarraNavegacion/BarraNavegacion";
 import BotonColor from "./components/BotonColor/BotonColor";
 import CursoItem from "./components/CursoItem/CursoItem";
 
-// Array de cursos visto en las Clases 3 y 6
+// Los Array 
 const cursos = [
   { id: 1, nombre: "React" },
   { id: 2, nombre: "Node.js" },
