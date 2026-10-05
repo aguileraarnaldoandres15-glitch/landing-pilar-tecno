@@ -2,8 +2,8 @@
 import axios from "axios";
 import type { Producto, ProductoFormulario } from "../types/Producto";
 
-// ⚠️ IMPORTANTE: Reemplazá esto por tu URL real de Vercel
-const BASE_URL = "https://https://api-inventario-moto.vercel.app/api/productos";
+// URL de Vercel
+const BASE_URL = "https://api-inventario-moto.vercel.app/api/productos";
 
 export const obtenerProductos = async (): Promise<Producto[]> => {
   const respuesta = await axios.get(BASE_URL);
