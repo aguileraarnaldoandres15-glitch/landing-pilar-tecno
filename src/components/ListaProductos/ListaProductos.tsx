@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
-import { Card, Row, Col, Badge, Spinner } from "react-bootstrap";
-import { obtenerProductos } from "../../services/productoService";
+import { Card, Row, Col, Badge, Spinner, Button } from "react-bootstrap";
+import { obtenerProductos, eliminarProducto } from "../../services/productoService";
 import type { Producto } from "../../types/Producto";
-import FormularioProducto from "../FormularioProducto/FormularioProducto"; // <-- Importamos el form
+import FormularioProducto from "../FormularioProducto/FormularioProducto";
+import ModalConfirmacion from "../ModalConfirmacion/ModalConfirmacion";
+import ModalEditarProducto from "../ModalEditarProducto/ModalEditarProducto";
 
 const ListaProductos = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Separamos la llamada a la API en una función para poder llamarla después de crear un producto
+  // Estados para el Modal de eliminación
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null);
+  const [estaEliminando, setEstaEliminando] = useState(false);
+
   const cargarDatos = () => {
     setCargando(true);
     obtenerProductos()
@@ -22,9 +28,40 @@ const ListaProductos = () => {
     cargarDatos();
   }, []);
 
+  // Estados para el Modal de edición
+  const [mostrarModalEditar, setMostrarModalEditar] = useState(false);
+  const [productoAEditar, setProductoAEditar] = useState<Producto | null>(null);
+
+  const handleClickEditar = (producto: Producto) => {
+    setProductoAEditar(producto);
+    setMostrarModalEditar(true);
+  };
+
+  // Función que se ejecuta al hacer clic en el botón rojo de la tarjeta
+  const handleClickEliminar = (producto: Producto) => {
+    setProductoSeleccionado(producto);
+    setMostrarModal(true);
+  };
+
+  // Función que se ejecuta al confirmar dentro del Modal
+  const confirmarEliminacion = async () => {
+    if (!productoSeleccionado || !productoSeleccionado._id) return;
+    
+    setEstaEliminando(true);
+    try {
+      await eliminarProducto(productoSeleccionado._id);
+      setMostrarModal(false);
+      cargarDatos(); // Recargamos la lista después de borrar
+    } catch (error) {
+      alert("Hubo un error al eliminar el repuesto.");
+    } finally {
+      setEstaEliminando(false);
+      setProductoSeleccionado(null);
+    }
+  };
+
   return (
     <>
-      {/* Colocamos el formulario arriba, y le pasamos cargarDatos para que actualice la lista */}
       <FormularioProducto alCrear={cargarDatos} />
 
       <h3 className="mb-4">Repuestos Disponibles</h3>
@@ -47,16 +84,37 @@ const ListaProductos = () => {
           {productos.map((producto) => (
             <Col md={4} key={producto._id} className="mb-4">
               <Card className="h-100 shadow-sm border-0 bg-light">
-                <Card.Body>
+                <Card.Body className="d-flex flex-column">
                   <Card.Title className="fw-bold">{producto.nombre}</Card.Title>
-                  <Card.Text className="text-secondary">
+                  <Card.Text className="text-secondary flex-grow-1">
                     {producto.descripcion}
                   </Card.Text>
-                  <div className="d-flex justify-content-between align-items-center mt-3">
+                  
+                  <div className="d-flex justify-content-between align-items-center mt-3 mb-3">
                     <h5 className="mb-0 text-success fw-bold">${producto.precio}</h5>
                     <Badge bg={producto.stock > 5 ? "primary" : "danger"} pill>
                       Stock: {producto.stock}
                     </Badge>
+                  </div>
+
+                  <div className="d-flex gap-2 border-top pt-3 mt-auto">
+                    {/* El botón de editar lo sumamos en el próximo paso */}
+                    <Button 
+                     variant="outline-primary" 
+                     size="sm" 
+                     className="w-50"
+                     onClick={() => handleClickEditar(producto)}
+                        >
+                       Editar
+                    </Button>
+                    <Button 
+                      variant="outline-danger" 
+                      size="sm" 
+                      className="w-50"
+                      onClick={() => handleClickEliminar(producto)}
+                    >
+                      Eliminar
+                    </Button>
                   </div>
                 </Card.Body>
               </Card>
@@ -64,6 +122,22 @@ const ListaProductos = () => {
           ))}
         </Row>
       )}
+
+      {/* Insertamos el Modal invisible al final del componente */}
+      <ModalConfirmacion
+        mostrar={mostrarModal}
+        productoAEliminar={productoSeleccionado}
+        onCerrar={() => setMostrarModal(false)}
+        onConfirmar={confirmarEliminacion}
+        estaEliminando={estaEliminando}
+      />
+
+      <ModalEditarProducto
+        mostrar={mostrarModalEditar}
+        productoAEditar={productoAEditar}
+        onCerrar={() => setMostrarModalEditar(false)}
+        onGuardar={cargarDatos}
+      />
     </>
   );
 };
