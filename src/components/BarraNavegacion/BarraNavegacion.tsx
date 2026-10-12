@@ -1,5 +1,9 @@
+// Importamos las librerías necesarias para la barra de navegación
+
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
+// Creamos el componente BarraNavegacion que se encargará de mostrar la barra de navegación con los enlaces a las diferentes secciones de la aplicación
 
 const BarraNavegacion = () => {
   return (

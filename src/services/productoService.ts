@@ -1,8 +1,10 @@
-// src/services/productoService.ts
+// Importamos la librería axios para realizar las peticiones HTTP y los tipos de datos Producto y ProductoFormulario desde el archivo de tipos
+
 import axios from "axios";
 import type { Producto, ProductoFormulario } from "../types/Producto";
 
-// URL de Vercel
+// URL de Vercel donde se encuentra la API de productos
+
 const BASE_URL = "https://api-inventario-moto.vercel.app/api/productos";
 
 export const obtenerProductos = async (): Promise<Producto[]> => {

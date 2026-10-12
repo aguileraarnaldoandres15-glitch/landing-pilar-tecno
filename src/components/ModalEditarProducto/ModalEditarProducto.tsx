@@ -1,8 +1,12 @@
+// Realizamos las importaciones necesarias para el modal de edición de productos
+
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { actualizarProducto } from "../../services/productoService";
 import type { Producto, ProductoFormulario } from "../../types/Producto";
+
+// Definimos las propiedades que recibirá el componente ModalEditarProducto
 
 type Props = {
   mostrar: boolean;
@@ -11,16 +15,20 @@ type Props = {
   onGuardar: () => void;
 };
 
+// Creamos el componente ModalEditarProducto que recibe las propiedades definidas anteriormente
+
 const ModalEditarProducto = ({ mostrar, productoAEditar, onCerrar, onGuardar }: Props) => {
   const formik = useFormik<ProductoFormulario>({
+
     // Cargamos los valores del producto si existe, sino en blanco
+    
     initialValues: {
       nombre: productoAEditar?.nombre || "",
       descripcion: productoAEditar?.descripcion || "",
       precio: productoAEditar?.precio || 0,
       stock: productoAEditar?.stock || 0,
     },
-    enableReinitialize: true, // Esto es vital para que cargue los datos al abrir el modal
+    enableReinitialize: true, // Esto es para que cargue los datos al abrir el modal
     validationSchema: Yup.object({
       nombre: Yup.string().required("El nombre es obligatorio"),
       descripcion: Yup.string().required("La descripción es obligatoria"),

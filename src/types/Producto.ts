@@ -1,11 +1,13 @@
+// Definimos el tipo de datos Producto que representa un producto en nuestro sistema
+
 export type Producto = {
   _id: string;
   nombre: string;
   descripcion: string;
   precio: number;
   stock: number;
-  proveedor?: string; // Opcional, como lo tenías en tu backend
+  proveedor?: string;
 };
 
-// Este es el tipo que va a usar Formik, descartando el _id porque lo genera directamente Mongo de manera automática
+// Definimos el tipo de datos ProductoFormulario que representa los datos necesarios para crear o actualizar un producto, excluyendo el _id y el proveedor
 export type ProductoFormulario = Pick<Producto, "nombre" | "descripcion" | "precio" | "stock">;

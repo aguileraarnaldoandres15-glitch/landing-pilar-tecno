@@ -1,3 +1,5 @@
+// Realizamos las importaciones necesarias para el componente ListaProductos
+
 import { useState, useEffect } from "react";
 import { Card, Row, Col, Badge, Spinner, Button } from "react-bootstrap";
 import { obtenerProductos, eliminarProducto } from "../../services/productoService";
@@ -6,15 +8,20 @@ import FormularioProducto from "../FormularioProducto/FormularioProducto";
 import ModalConfirmacion from "../ModalConfirmacion/ModalConfirmacion";
 import ModalEditarProducto from "../ModalEditarProducto/ModalEditarProducto";
 
+// Creamos el componente ListaProductos que se encargará de mostrar la lista de productos y manejar los modales de edición y eliminación
+
 const ListaProductos = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Estados para el Modal de eliminación
+
   const [mostrarModal, setMostrarModal] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null);
   const [estaEliminando, setEstaEliminando] = useState(false);
+
+  // Función para cargar los datos de la API y manejar los estados de carga y error
 
   const cargarDatos = () => {
     setCargando(true);
@@ -29,6 +36,7 @@ const ListaProductos = () => {
   }, []);
 
   // Estados para el Modal de edición
+
   const [mostrarModalEditar, setMostrarModalEditar] = useState(false);
   const [productoAEditar, setProductoAEditar] = useState<Producto | null>(null);
 
@@ -38,12 +46,14 @@ const ListaProductos = () => {
   };
 
   // Función que se ejecuta al hacer clic en el botón rojo de la tarjeta
+
   const handleClickEliminar = (producto: Producto) => {
     setProductoSeleccionado(producto);
     setMostrarModal(true);
   };
 
   // Función que se ejecuta al confirmar dentro del Modal
+
   const confirmarEliminacion = async () => {
     if (!productoSeleccionado || !productoSeleccionado._id) return;
     
@@ -98,7 +108,7 @@ const ListaProductos = () => {
                   </div>
 
                   <div className="d-flex gap-2 border-top pt-3 mt-auto">
-                    {/* El botón de editar lo sumamos en el próximo paso */}
+                    
                     <Button 
                      variant="outline-primary" 
                      size="sm" 
@@ -123,7 +133,7 @@ const ListaProductos = () => {
         </Row>
       )}
 
-      {/* Insertamos el Modal invisible al final del componente */}
+      {/* Insertamos el Modal de confirmación */}
       <ModalConfirmacion
         mostrar={mostrarModal}
         productoAEliminar={productoSeleccionado}
@@ -131,6 +141,8 @@ const ListaProductos = () => {
         onConfirmar={confirmarEliminacion}
         estaEliminando={estaEliminando}
       />
+      
+      {/* Insertamos el Modal de edición */}
 
       <ModalEditarProducto
         mostrar={mostrarModalEditar}

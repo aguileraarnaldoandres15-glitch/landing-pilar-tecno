@@ -1,3 +1,5 @@
+// importamos las librerías necesarias para la aplicación
+
 import { Routes, Route } from "react-router-dom";
 import BarraNavegacion from "./components/BarraNavegacion/BarraNavegacion";
 import PaginaInicio from "./pages/PaginaInicio";

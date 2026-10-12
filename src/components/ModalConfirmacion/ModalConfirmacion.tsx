@@ -1,5 +1,9 @@
+// Realizamos las importaciones necesarias para el modal de confirmación de eliminación de productos
+
 import { Modal, Button } from "react-bootstrap";
 import type { Producto } from "../../types/Producto";
+
+// Definimos las propiedades que recibirá el componente ModalConfirmacion
 
 type Props = {
   mostrar: boolean;
@@ -8,6 +12,8 @@ type Props = {
   onConfirmar: () => void;
   estaEliminando: boolean;
 };
+
+// Creamos el componente ModalConfirmacion que recibe las propiedades definidas anteriormente
 
 const ModalConfirmacion = ({
   mostrar,

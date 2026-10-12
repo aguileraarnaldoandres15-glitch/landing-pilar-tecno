@@ -1,3 +1,5 @@
+// Importamos las librerías necesarias para el formulario de productos
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Form, Button, Row, Col, Alert } from "react-bootstrap";
@@ -5,12 +7,18 @@ import { crearProducto } from "../../services/productoService";
 import type { ProductoFormulario } from "../../types/Producto";
 import { useState } from "react";
 
+// Definimos las propiedades que recibirá el componente FormularioProducto
+
 type Props = {
   alCrear: () => void; // Función que le va a avisar a la lista que recargue los datos
 };
 
+// Creamos el componente FormularioProducto que recibe las propiedades definidas anteriormente
+
 const FormularioProducto = ({ alCrear }: Props) => {
   const [mensaje, setMensaje] = useState<string | null>(null);
+
+  // Configuramos Formik para manejar el formulario y las validaciones con Yup
 
   const formik = useFormik<ProductoFormulario>({
     initialValues: {
@@ -19,7 +27,9 @@ const FormularioProducto = ({ alCrear }: Props) => {
       precio: 0,
       stock: 0,
     },
-    // Yup se encarga de las validaciones obligatorias
+
+    // Yup se encarga de las validaciones obligatorias y de los rangos de valores
+    
     validationSchema: Yup.object({
       nombre: Yup.string().required("El nombre es obligatorio"),
       descripcion: Yup.string().required("La descripción es obligatoria"),
